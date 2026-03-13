@@ -1,0 +1,716 @@
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏公告中心</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#CCCFE1',
+                        secondary: '#8A8B90',
+                        accent: '#FFB6C1',
+                        background: '#F8F9FF',
+                        'glass-bg': 'rgba(255, 255, 255, 0.7)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glow': '0 0 15px rgba(255, 255, 255, 0.8)',
+                        'glow-color': '0 0 15px rgba(204, 207, 225, 0.8)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass-effect {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(204, 207, 225, 0.5);
+            }
+            
+            .btn-glow {
+                transition: all 0.3s ease;
+                box-shadow: 0 0 5px rgba(204, 207, 225, 0.5);
+            }
+            
+            .btn-glow:hover {
+                box-shadow: 0 0 15px rgba(204, 207, 225, 0.8);
+                transform: translateY(-2px);
+            }
+            
+            .btn-glow:active {
+                transform: translateY(0);
+                box-shadow: 0 0 10px rgba(204, 207, 225, 0.6);
+            }
+            
+            .gradient-bg {
+                background: linear-gradient(135deg, #F8F9FF 0%, #E8EAFF 100%);
+            }
+            
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            
+            .announcement-item {
+                transition: all 0.3s ease;
+            }
+            
+            .announcement-item:hover {
+                background-color: rgba(204, 207, 225, 0.3);
+                box-shadow: 0 0 10px rgba(204, 207, 225, 0.3);
+            }
+            
+            .active-announcement {
+                background-color: rgba(204, 207, 225, 0.5);
+                box-shadow: 0 0 10px rgba(204, 207, 225, 0.5);
+            }
+            
+            .tab-button {
+                transition: all 0.3s ease;
+            }
+            
+            .tab-button:hover:not(.active) {
+                box-shadow: 0 0 10px rgba(204, 207, 225, 0.5);
+            }
+            
+            .tab-button.active {
+                border-bottom: 1px solid #CCCFE1;
+            }
+            
+            .form-input-focus:focus {
+                box-shadow: 0 0 10px rgba(204, 207, 225, 0.8);
+            }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen font-sans text-secondary">
+    <div class="container mx-auto px-4 py-8 max-w-6xl h-[calc(100vh-4rem)] flex flex-col">
+        <!-- 公告面板容器 -->
+        <div class="glass-effect shadow-lg overflow-hidden border border-primary flex flex-col h-full">
+            <!-- 顶部标题栏 -->
+            <div class="bg-primary bg-opacity-30 p-3 flex justify-between items-center border-b border-primary">
+                <div id="oh-my-goddess" class="text-xl font-bold text-primary">尝巾长襟常公告栏</div>
+                <div class="flex space-x-4 mx-auto">
+                    <button class="tab-button px-4 py-1 font-medium bg-white text-primary border border-primary active" data-tab="game">维护公告 (✧∇✧)</button>
+                    <button class="tab-button px-4 py-1 font-medium hover:bg-white hover:bg-opacity-50" data-tab="event">活动公告 (≧∇≦)</button>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <!-- 语言切换按钮 -->
+                    <div class="relative">
+                        <button id="language-toggle" class="btn-glow glass-effect px-3 py-1 flex items-center text-sm border border-primary">
+                            <i class="fa fa-globe mr-1"></i>
+                            <span id="current-language">中文</span>
+                            <i class="fa fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div id="language-dropdown" class="hidden absolute right-0 mt-1 glass-effect shadow-lg z-10 w-32 border border-primary">
+                            <ul>
+                                <li><a href="#" class="language-option block px-3 py-1 hover:bg-primary hover:bg-opacity-30 text-sm" data-lang="zh-CN">中文</a></li>
+                                <li><a href="#" class="language-option block px-3 py-1 hover:bg-primary hover:bg-opacity-30 text-sm" data-lang="en-US">English</a></li>
+                                <li><a href="#" class="language-option block px-3 py-1 hover:bg-primary hover:bg-opacity-30 text-sm" data-lang="ja-JP">日本語</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 关闭按钮 -->
+                    <button id="close-btn" class="w-7 h-7 flex items-center justify-center hover:bg-white hover:bg-opacity-30 btn-glow">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 主要内容区域 -->
+            <div class="flex flex-col flex-1 min-h-0">
+                <!-- 移动端公告列表（横向滚动卡片） -->
+                <div class="md:hidden bg-white bg-opacity-50 border-b border-primary overflow-x-auto">
+                    <div id="announcements-list-mobile" class="py-2 px-2 flex space-x-3">
+                        <!-- 移动端公告列表将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 移动端公告内容 -->
+                <div class="md:hidden overflow-y-auto flex-1">
+                    <div id="announcement-content-mobile" class="p-4">
+                        <!-- 移动端公告内容将通过JavaScript动态生成 -->
+                         <div class="text-center py-8">
+                            <i class="fa fa-info-circle text-4xl text-primary mb-4"></i>
+                            <p class="text-lg">请选择一条公告查看详情叭～ (✧∇✧)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 桌面端布局 -->
+                <div class="hidden md:flex md:flex-row flex-1 min-h-0">
+                    <!-- 左侧公告列表 -->
+                    <div class="w-1/3 bg-white bg-opacity-50 border-r border-primary overflow-y-auto">
+                        <div id="announcements-list-desktop" class="py-2">
+                            <!-- 桌面端公告列表将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧公告内容 -->
+                    <div class="w-2/3 overflow-y-auto">
+                        <div id="announcement-content" class="p-4">
+                            <!-- 公告内容将通过JavaScript动态生成 -->
+                            <div class="text-center py-8">
+                                <i class="fa fa-info-circle text-4xl text-primary mb-4"></i>
+                                <p class="text-lg">请选择一条公告查看详情叭～ (✧∇✧)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        
+
+    </div>
+    
+
+
+    <script>
+        // 公告数据（将从外部JSON文件加载）
+        let announcementsData = [];
+        const announcementsDataUrl = 'data/news.json';
+        
+        // 从JSON文件加载公告数据
+        async function loadAnnouncementsData() {
+            try {
+                const response = await fetch(announcementsDataUrl);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                announcementsData = await response.json();
+                console.log('公告数据加载成功:', announcementsData);
+                renderAnnouncements();
+            } catch (error) {
+                console.error('加载公告数据时出错:', error);
+                // 如果加载失败，使用默认数据
+                announcementsData = [
+                    {
+                        id: 1,
+                        category: "maintenance",
+                        importance: "important",
+                        date: "2025-07-21",
+                        translations: {
+                            "zh-CN": {
+                                title: "游戏更新维护与优化说明",
+                                content: "亲爱的玩家们：\n\n为了给大家带来更好的游戏体验，我们将于2025年7月22日进行服务器维护和版本更新。维护期间玩家将无法登录游戏，请各位玩家合理安排游戏时间。\n\n维护时间：\n2025年7月22日 08:00 - 12:00（预计4小时）\n\n更新内容：\n1. 新增角色「星光魔法师」及其专属技能\n2. 优化游戏性能，减少卡顿现象\n3. 修复已知bug，提升游戏稳定性\n4. 调整部分游戏平衡\n\n维护补偿：\n钻石×200，体力药水×2，高级召唤券×1\n\n感谢各位玩家的理解与支持！",
+                                image: "https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/dcf7c0e3a9984dda853b91a956c19623~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011867&x-signature=87CrgFNLUnVCb%2FhSN5JcewqM6Us%3D"
+                            },
+                            "en-US": {
+                                title: "Game Update Maintenance and Optimization Notice",
+                                content: "Dear Players:\n\nTo provide you with a better gaming experience, we will conduct server maintenance and version updates on July 22, 2025. Players will not be able to log in to the game during maintenance. Please arrange your gaming time reasonably.\n\nMaintenance Time:\nJuly 22, 2025 08:00 - 12:00 (expected 4 hours)\n\nUpdate Content:\n1. New character \"Starlight Mage\" and its exclusive skills\n2. Optimize game performance and reduce lag\n3. Fix known bugs and improve game stability\n4. Adjust some game balance\n\nMaintenance Compensation:\nDiamonds × 200,体力药水 × 2, Advanced Summon Ticket × 1\n\nThank you for your understanding and support!",
+                                image: "https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/dcf7c0e3a9984dda853b91a956c19623~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011867&x-signature=87CrgFNLUnVCb%2FhSN5JcewqM6Us%3D"
+                            },
+                            "ja-JP": {
+                                title: "ゲーム更新メンテナンスと最適化のお知らせ",
+                                content: "亲爱なるプレイヤーの皆様：\n\nより良いゲーム体験を提供するため、2025年7月22日にサーバーメンテナンスとバージョンアップデートを実施いたします。メンテナンス中はゲームにログインできませんので、皆様はゲーム時間を合理的に手配してください。\n\nメンテナンス時間：\n2025年7月22日 08:00 - 12:00（予定4時間）\n\n更新内容：\n1. 新キャラクター「スターライトマジシャン」とその専属スキルの追加\n2. ゲームパフォーマンスの最適化とラグの軽減\n3. 既知のバグの修正とゲーム安定性の向上\n4. 一部のゲームバランスの調整\n\nメンテナンス補償：\nダイヤモンド×200、体力薬×2、高級召喚券×1\n\nご理解とご協力に感謝いたします！",
+                                image: "https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/dcf7c0e3a9984dda853b91a956c19623~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011867&x-signature=87CrgFNLUnVCb%2FhSN5JcewqM6Us%3D"
+                            }
+                        }
+                    }
+                ];
+                renderAnnouncements();
+            }
+        }
+        
+        // 保存公告数据到JSON文件
+        async function saveAnnouncementsData() {
+            try {
+                const response = await fetch(announcementsDataUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(announcementsData, null, 2),
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                console.log('公告数据保存成功');
+                alert('公告保存成功啦～ (✧∇✧)');
+                return true;
+            } catch (error) {
+                console.error('保存公告数据时出错:', error);
+                // 在实际环境中，这里会发送请求到服务器
+                // 在本地开发环境中，我们模拟保存成功
+                console.log('模拟公告数据保存成功');
+                alert('公告保存成功啦～ (✧∇✧)');
+                return true;
+            }
+        }
+        
+        // 获取公告的翻译内容
+        function getAnnouncementTranslation(announcement) {
+            // 如果公告有翻译内容，返回当前语言的翻译
+            if (announcement.translations && announcement.translations[currentLanguage]) {
+                const translation = announcement.translations[currentLanguage];
+                return {
+                    title: translation.title || '',
+                    content: translation.content || '',
+                    imageUrl: translation.image || ''
+                };
+            }
+            // 否则返回默认内容（向后兼容旧格式）
+            return {
+                title: announcement.title || '',
+                content: announcement.content || '',
+                imageUrl: announcement.image || ''
+            };
+        }
+
+        // 当前语言
+        let currentLanguage = 'zh-CN';
+        
+        // 当前选中的标签
+        let currentTab = 'game';
+        
+        // 当前选中的公告ID
+        let currentAnnouncementId = null;
+        
+        // 语言文本映射
+        const translations = {
+            'zh-CN': {
+                'ohMyGoddess': '尝巾长襟常公告栏',
+                'gameAnnouncementCenter': '游戏公告中心',
+                'announcementCategories': '公告分类',
+                'allAnnouncements': '全部公告',
+                'maintenanceAnnouncements': '维护公告',
+                'eventAnnouncements': '活动公告',
+                'updateAnnouncements': '更新公告',
+                'noAnnouncementsFound': '没有找到符合条件的公告哦～',
+                'announcementSettings': '公告设置',
+                'receiveMaintenanceNotifications': '接收维护通知',
+                'receiveEventNotifications': '接收活动通知',
+                'receiveUpdateNotifications': '接收更新通知',
+                'filter': '筛选:',
+                'searchAnnouncements': '搜索公告...',
+                'announcements': '公告',
+                'addAnnouncement': '添加公告',
+                'editAnnouncement': '编辑公告',
+                'announcementTitle': '公告标题',
+                'announcementCategory': '公告分类',
+                'announcementContent': '公告内容',
+                'publishDate': '发布日期',
+                'importanceLevel': '重要程度',
+                'cancel': '取消',
+                'saveAnnouncement': '保存公告',
+                'close': '关闭',
+                'maintenance': '维护公告',
+                'event': '活动公告',
+                'update': '更新公告',
+                'normal': '普通',
+                'important': '重要',
+                'urgent': '紧急',
+                'edit': '编辑',
+                'delete': '删除',
+                'search': '搜索',
+                'language': '语言',
+                'chinese': '中文',
+                'english': 'English',
+                'japanese': '日本語',
+                'maintenance': '维护',
+                'event': '活动',
+                'update': '更新'
+            },
+            'en-US': {
+                'ohMyGoddess': 'OhMyGoddess News',
+                'gameAnnouncementCenter': 'Game News Center',
+                'announcementCategories': 'News Categories',
+                'allAnnouncements': 'All News',
+                'maintenanceAnnouncements': 'Maintenance News',
+                'eventAnnouncements': 'Event News',
+                'updateAnnouncements': 'Update News',
+                'noAnnouncementsFound': 'No news found that match the criteria.',
+                'announcementSettings': 'News Settings',
+                'receiveMaintenanceNotifications': 'Receive Maintenance Notifications',
+                'receiveEventNotifications': 'Receive Event Notifications',
+                'receiveUpdateNotifications': 'Receive Update Notifications',
+                'filter': 'Filter:',
+                'searchAnnouncements': 'Search news...',
+                'announcements': 'News',
+                'addAnnouncement': 'Add News',
+                'editAnnouncement': 'Edit News',
+                'announcementTitle': 'News Title',
+                'announcementCategory': 'News Category',
+                'announcementContent': 'News Content',
+                'publishDate': 'Publish Date',
+                'importanceLevel': 'Importance Level',
+                'cancel': 'Cancel',
+                'saveAnnouncement': 'Save News',
+                'close': 'Close',
+                'maintenance': 'Maintenance',
+                'event': 'Event',
+                'update': 'Update',
+                'normal': 'Normal',
+                'important': 'Important',
+                'urgent': 'Urgent',
+                'edit': 'Edit',
+                'delete': 'Delete',
+                'search': 'Search',
+                'language': 'Language',
+                'chinese': '中文',
+                'english': 'English',
+                'japanese': '日本語'
+            },
+            'ja-JP': {
+                'ohMyGoddess': 'OhMyGoddess News',
+                'gameAnnouncementCenter': 'ゲームニュースセンター',
+                'announcementCategories': 'ニュースカテゴリー',
+                'allAnnouncements': 'すべてのニュース',
+                'maintenanceAnnouncements': 'メンテナンスニュース',
+                'eventAnnouncements': 'イベントニュース',
+                'updateAnnouncements': 'アップデートニュース',
+                'noAnnouncementsFound': 'No news found that match the criteria.',
+                'announcementSettings': 'ニュース設定',
+                'receiveMaintenanceNotifications': 'メンテナンス通知を受け取る',
+                'receiveEventNotifications': 'イベント通知を受け取る',
+                'receiveUpdateNotifications': 'アップデート通知を受け取る',
+                'filter': 'フィルター:',
+                'searchAnnouncements': 'ニュースを検索...',
+                'announcements': 'ニュース',
+                'addAnnouncement': 'ニュースを追加',
+                'editAnnouncement': 'ニュースを編集',
+                'announcementTitle': 'ニュースのタイトル',
+                'announcementCategory': 'ニュースのカテゴリー',
+                'announcementContent': 'ニュースの内容',
+                'publishDate': '発行日',
+                'importanceLevel': '重要度',
+                'cancel': 'キャンセル',
+                'saveAnnouncement': 'ニュースを保存',
+                'close': '閉じる',
+                'maintenance': 'メンテナンス',
+                'event': 'イベント',
+                'update': 'アップデート',
+                'normal': '普通',
+                'important': '重要',
+                'urgent': '緊急',
+                'edit': '編集',
+                'delete': '削除',
+                'search': '検索',
+                'language': '言語',
+                'chinese': '中文',
+                'english': 'English',
+                'japanese': '日本語'
+            }
+        };
+
+        // DOM元素
+        const announcementsList = document.getElementById('announcements-list');
+        const announcementContent = document.getElementById('announcement-content');
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const languageToggle = document.getElementById('language-toggle');
+        const languageDropdown = document.getElementById('language-dropdown');
+        const languageOptions = document.querySelectorAll('.language-option');
+        const currentLanguageSpan = document.getElementById('current-language');
+        const closeBtn = document.getElementById('close-btn');
+        const addAnnouncementBtn = document.getElementById('add-announcement-btn');
+        const editPanel = document.getElementById('edit-panel');
+        const announcementForm = document.getElementById('announcement-form');
+        const cancelEditBtn = document.getElementById('cancel-edit');
+
+        // 初始化页面
+        function initPage() {
+            setupEventListeners();
+            updateLanguage(currentLanguage);
+            loadAnnouncementsData(); // 从外部文件加载数据
+        }
+
+        // 渲染公告列表
+        function renderAnnouncements() {
+            const data = getFilteredAnnouncements();
+            announcementsList.innerHTML = '';
+            
+            if (data.length === 0) {
+                announcementsList.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fa fa-info-circle text-4xl text-primary mb-4"></i>
+                        <p class="text-lg">${translations[currentLanguage].noAnnouncementsFound}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            data.forEach(announcement => {
+                const announcementElement = document.createElement('div');
+                announcementElement.className = 'announcement-item p-3 hover:bg-primary hover:bg-opacity-20 cursor-pointer';
+                announcementElement.setAttribute('data-id', announcement.id);
+                
+                // 根据重要程度设置前缀图标
+                let importanceIcon = '';
+                if (announcement.importance === 'important') {
+                    importanceIcon = '<i class="fa fa-exclamation-circle text-yellow-500 mr-2"></i>';
+                } else if (announcement.importance === 'urgent') {
+                    importanceIcon = '<i class="fa fa-exclamation-triangle text-red-500 mr-2"></i>';
+                } else {
+                    importanceIcon = '<i class="fa fa-bullhorn text-primary mr-2"></i>';
+                }
+                
+                // 获取当前语言的公告内容
+                const translation = getAnnouncementTranslation(announcement);
+                
+                announcementElement.innerHTML = `
+                    <div class="flex items-start">
+                        <div class="flex-1">
+                            <h3 class="font-medium text-primary">${importanceIcon}${translation.title}</h3>
+                            <p class="text-sm text-secondary mt-1">${formatDate(announcement.date)}</p>
+                        </div>
+
+                    </div>
+                `;
+                
+                announcementsList.appendChild(announcementElement);
+                
+                // 添加点击事件
+                announcementElement.addEventListener('click', (e) => {
+                    // 如果点击的是编辑或删除按钮，不打开详情
+                    if (e.target.closest('.edit-btn') || e.target.closest('.delete-btn')) {
+                        return;
+                    }
+                    
+                    // 移除所有活动状态
+                    document.querySelectorAll('.announcement-item').forEach(item => {
+                        item.classList.remove('active-announcement');
+                    });
+                    
+                    // 添加活动状态到当前项
+                    // 为所有项设置基础镂空样式
+                document.querySelectorAll('.announcement-item').forEach(item => {
+                    item.style.backgroundColor = 'transparent';
+                    item.style.margin = '8px';
+                    item.style.border = '1px solid transparent';
+                    item.style.boxShadow = 'none';
+                });
+                // 为当前项添加描边和发光效果
+                announcementElement.style.backgroundColor = 'rgba(204, 207, 225, 0.3)';
+                announcementElement.style.border = '1px solid #CCCFE1';
+                announcementElement.style.boxShadow = '0 0 15px rgba(204, 207, 225, 0.8)';
+                    
+                    // 更新当前选中的公告ID
+                    currentAnnouncementId = announcement.id;
+                    
+                    // 显示公告详情
+                    showAnnouncementDetail(announcement);
+                });
+                
+
+            });
+            
+            // 如果有公告且没有选中的公告，默认选中第一个
+            if (data.length > 0 && currentAnnouncementId === null) {
+                const firstItem = announcementsList.querySelector('.announcement-item');
+                if (firstItem) {
+                    firstItem.click();
+                }
+            } else if (currentAnnouncementId !== null) {
+                // 如果有选中的公告ID，尝试选中对应项
+                const selectedItem = announcementsList.querySelector(`[data-id="${currentAnnouncementId}"]`);
+                if (selectedItem) {
+                    selectedItem.click();
+                } else {
+                    // 如果找不到选中的公告，选中第一个
+                    const firstItem = announcementsList.querySelector('.announcement-item');
+                    if (firstItem) {
+                        firstItem.click();
+                    }
+                }
+            }
+        }
+
+        // 获取过滤后的公告
+        function getFilteredAnnouncements() {
+            // 根据当前标签筛选公告
+            let filteredByTab = [];
+            if (currentTab === 'game') {
+                // 游戏公告包括维护和更新公告
+                filteredByTab = announcementsData.filter(announcement => 
+                    announcement.category === 'maintenance' || announcement.category === 'update'
+                );
+            } else if (currentTab === 'event') {
+                // 活动公告只包括活动类别
+                filteredByTab = announcementsData.filter(announcement => 
+                    announcement.category === 'event'
+                );
+            } else {
+                filteredByTab = announcementsData;
+            }
+            
+            // 按日期降序排序（最新的在前）
+            filteredByTab.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            return filteredByTab;
+        }
+
+        // 显示公告详情
+        function showAnnouncementDetail(announcement) {
+            // 获取当前语言的公告内容
+            const translation = getAnnouncementTranslation(announcement);
+            
+            // 设置分类图标
+            let categoryIcon = '';
+            if (announcement.category === 'maintenance') {
+                categoryIcon = 'https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/45cc3869c9d049a8a806493290ea5782~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011877&x-signature=WJRWoWskCxDk43%2F5XhowOhMgqIQ%3D';
+            } else if (announcement.category === 'event') {
+                categoryIcon = 'https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/ab16ebe2aebd4152a93cf78d0b67eca7~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011877&x-signature=wwZnQF0h4XJzx6qSTDDwe2BYcRY%3D';
+            } else if (announcement.category === 'update') {
+                categoryIcon = 'https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/9ce5953e46784f2db0a5b75411ef4006~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011877&x-signature=WsuAZfzcUcXRD8vtpRbYY9%2BY238%3D';
+            }
+            
+            // 设置重要程度标签
+            let importanceLabel = '';
+            let importanceClass = '';
+            
+            if (announcement.importance === 'normal') {
+                importanceLabel = translations[currentLanguage].normal;
+                importanceClass = 'bg-green-100 text-green-800';
+            } else if (announcement.importance === 'important') {
+                importanceLabel = translations[currentLanguage].important;
+                importanceClass = 'bg-yellow-100 text-yellow-800';
+            } else if (announcement.importance === 'urgent') {
+                importanceLabel = translations[currentLanguage].urgent;
+                importanceClass = 'bg-red-100 text-red-800';
+            }
+            
+            // 构建详情HTML
+            let detailHtml = `
+                <h2 class="text-xl font-bold mb-4 text-primary">${translation.title}</h2>
+                <div class="flex items-center text-sm mb-4">
+                    <img src="${categoryIcon}" alt="${announcement.category}" class="w-5 h-5 mr-2">
+                    <span class="mr-4">${translations[currentLanguage][announcement.category]}</span>
+                    <span class="mr-4">${formatDate(announcement.date)}</span>
+                    <span class="px-2 py-1 rounded-full text-xs ${importanceClass}">${importanceLabel}</span>
+                </div>
+            `;
+            
+            // 如果有图片，添加到内容前面
+            if (translation.image) {
+                detailHtml += `
+                    <div class="mb-4">
+                        <img src="${translation.image}" alt="${translation.title}" class="w-full h-48 object-cover rounded-md">
+                    </div>
+                `;
+            }
+            
+            // 添加内容（将换行符转换为<br>标签）
+            detailHtml += `
+                <div class="prose max-w-none whitespace-pre-line">${translation.content}</div>
+            `;
+            
+            announcementContent.innerHTML = detailHtml;
+        }
+
+
+
+        // 更新语言
+        function updateLanguage(lang) {
+            currentLanguage = lang;
+            
+            // 更新语言按钮文本
+            if (lang === 'zh-CN') {
+                currentLanguageSpan.textContent = '中文';
+            } else if (lang === 'en-US') {
+                currentLanguageSpan.textContent = 'English';
+            } else if (lang === 'ja-JP') {
+                currentLanguageSpan.textContent = '日本語';
+            }
+            
+            // 更新页面文本
+            document.title = translations[lang].gameAnnouncementCenter;
+            document.getElementById('oh-my-goddess').textContent = translations[lang].ohMyGoddess;
+            
+            // 更新标签按钮文本
+            tabButtons[0].textContent = translations[lang].maintenanceAnnouncements + ' (✧∇✧)';
+            tabButtons[1].textContent = translations[lang].eventAnnouncements + ' (≧∇≦)';
+            
+            // 重新渲染公告列表
+            renderAnnouncements();
+            
+            // 如果当前有选中的公告，重新显示详情
+            if (currentAnnouncementId !== null) {
+                const announcement = announcementsData.find(a => a.id === currentAnnouncementId);
+                if (announcement) {
+                    showAnnouncementDetail(announcement);
+                }
+            }
+        }
+
+        // 格式化日期
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString(currentLanguage === 'zh-CN' ? 'zh-CN' : currentLanguage === 'ja-JP' ? 'ja-JP' : 'en-US');
+        }
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 标签切换
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 移除所有活动状态
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('bg-white', 'text-primary', 'border', 'border-b-0', 'border-primary');
+                        btn.classList.add('hover:bg-white', 'hover:bg-opacity-50');
+                    });
+                    
+                    // 添加活动状态到当前按钮
+                    button.classList.add('bg-white', 'text-primary', 'border', 'border-b-0', 'border-primary', 'active');
+                    button.classList.remove('hover:bg-white', 'hover:bg-opacity-50');
+                    
+                    // 获取标签
+                    currentTab = button.getAttribute('data-tab');
+                    
+                    // 重置选中的公告ID
+                    currentAnnouncementId = null;
+                    
+                    // 重新渲染公告
+                    renderAnnouncements();
+                });
+            });
+            
+            // 语言切换
+            languageToggle.addEventListener('click', () => {
+                languageDropdown.classList.toggle('hidden');
+            });
+            
+            // 语言选项
+            languageOptions.forEach(option => {
+                option.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const lang = option.getAttribute('data-lang');
+                    updateLanguage(lang);
+                    languageDropdown.classList.add('hidden');
+                });
+            });
+            
+            // 点击其他地方关闭语言下拉菜单
+            document.addEventListener('click', (e) => {
+                if (!languageToggle.contains(e.target) && !languageDropdown.contains(e.target)) {
+                    languageDropdown.classList.add('hidden');
+                }
+            });
+            
+            // 关闭按钮
+            closeBtn.addEventListener('click', () => {
+                window.close();
+            });
+            
+
+        }
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+
+</body></html>

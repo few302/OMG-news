@@ -1,0 +1,71 @@
+[
+    {
+        "id": 1,
+        "category": "maintenance",
+        "importance": "important",
+        "date": "2025-07-21",
+        "translations": {
+            "zh-CN": {
+                "title": "游戏更新维护与优化说明",
+                "content": "亲爱的玩家们：\n\n为了给大家带来更好的游戏体验，我们将于2025年7月22日进行服务器维护和版本更新。维护期间玩家将无法登录游戏，请各位玩家合理安排游戏时间。\n\n维护时间：\n2025年7月22日 08:00 - 12:00（预计4小时）\n\n更新内容：\n1. 新增角色「星光魔法师」及其专属技能\n2. 优化游戏性能，减少卡顿现象\n3. 修复已知bug，提升游戏稳定性\n4. 调整部分游戏平衡\n\n维护补偿：\n钻石×200，体力药水×2，高级召唤券×1\n\n感谢各位玩家的理解与支持！",
+                "image": "https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/dcf7c0e3a9984dda853b91a956c19623~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011867&x-signature=87CrgFNLUnVCb%2FhSN5JcewqM6Us%3D"
+            },
+            "en-US": {
+                "title": "Game Update Maintenance and Optimization Notice",
+                "content": "Dear Players:\n\nTo provide you with a better gaming experience, we will conduct server maintenance and version updates on July 22, 2025. Players will not be able to log in to the game during maintenance. Please arrange your gaming time reasonably.\n\nMaintenance Time:\nJuly 22, 2025 08:00 - 12:00 (expected 4 hours)\n\nUpdate Content:\n1. New character \"Starlight Mage\" and its exclusive skills\n2. Optimize game performance and reduce lag\n3. Fix known bugs and improve game stability\n4. Adjust some game balance\n\nMaintenance Compensation:\nDiamonds × 200,体力药水 × 2, Advanced Summon Ticket × 1\n\nThank you for your understanding and support!",
+                "image": "https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/dcf7c0e3a9984dda853b91a956c19623~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011867&x-signature=87CrgFNLUnVCb%2FhSN5JcewqM6Us%3D"
+            },
+            "ja-JP": {
+                "title": "ゲーム更新メンテナンスと最適化のお知らせ",
+                "content": "亲爱なるプレイヤーの皆様：\n\nより良いゲーム体験を提供するため、2025年7月22日にサーバーメンテナンスとバージョンアップデートを実施いたします。メンテナンス中はゲームにログインできませんので、皆様はゲーム時間を合理的に手配してください。\n\nメンテナンス時間：\n2025年7月22日 08:00 - 12:00（予定4時間）\n\n更新内容：\n1. 新キャラクター「スターライトマジシャン」とその専属スキルの追加\n2. ゲームパフォーマンスの最適化とラグの軽減\n3. 既知のバグの修正とゲーム安定性の向上\n4. 一部のゲームバランスの調整\n\nメンテナンス補償：\nダイヤモンド×200、体力薬×2、高級召喚券×1\n\nご理解とご協力に感謝いたします！",
+                "image": "https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/dcf7c0e3a9984dda853b91a956c19623~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011867&x-signature=87CrgFNLUnVCb%2FhSN5JcewqM6Us%3D"
+            }
+        }
+    },
+    {
+        "id": 2,
+        "category": "event",
+        "importance": "normal",
+        "date": "2025-07-24",
+        "translations": {
+            "zh-CN": {
+                "title": "夏日限定活动「海滨冒险」开启",
+                "content": "炎炎夏日，「海滨冒险」活动清凉开启！参与活动赢取限定皮肤和丰厚奖励吧～\n\n活动时间：\n2025年7月25日 - 8月10日\n\n活动内容：\n1. 完成每日任务获取「贝壳」\n2. 使用「贝壳」兑换限定皮肤和道具\n3. 参与「沙滩排球」小游戏赢取额外奖励\n4. 组队挑战「深海遗迹」副本\n\n限定奖励：\n- 「夏日泳装」系列皮肤\n- 限定头像框「海滨假期」\n- 限定称号「海洋守护者」\n- 稀有坐骑「彩虹海豚」\n\n活动期间登录即可领取「夏日礼包」，不要错过哦～",
+                "image": ""
+            },
+            "en-US": {
+                "title": "Summer Limited Event \"Beach Adventure\" Now Available",
+                "content": "Hot summer days, the \"Beach Adventure\" event is now available! Participate in the event to win limited skins and rich rewards~\n\nEvent Period:\nJuly 25, 2025 - August 10, 2025\n\nEvent Content:\n1. Complete daily tasks to obtain \"Shells\"\n2. Use \"Shells\" to exchange for limited skins and items\n3. Participate in the \"Beach Volleyball\" mini-game to win extra rewards\n4. Team up to challenge the \"Deep Sea Ruins\" dungeon\n\nLimited Rewards:\n- \"Summer Swimwear\" series skins\n- Limited avatar frame \"Beach Holiday\"\n- Limited title \"Ocean Guardian\"\n- Rare mount \"Rainbow Dolphin\"\n\nLog in during the event period to receive the \"Summer Gift Pack\", don't miss it～",
+                "image": ""
+            },
+            "ja-JP": {
+                "title": "夏限定イベント「海浜アドベンチャー」開催中",
+                "content": "真夏の暑い日々、「海浜アドベンチャー」イベントが開催中！イベントに参加して限定スキンと豊富な報酬を獲得しよう～\n\nイベント期間：\n2025年7月25日 - 8月10日\n\nイベント内容：\n1. 毎日のタスクを完了して「貝殻」を入手\n2. 「貝殻」を使って限定スキンとアイテムと交換\n3. 「ビーチバレーボール」ミニゲームに参加して特別報酬を獲得\n4. チームを組んで「深海遺跡」ダンジョンに挑戦\n\n限定報酬：\n- 「サマー水着」シリーズスキン\n- 限定アバターフレーム「ビーチホリデー」\n- 限定称号「海の守護者」\n- レアマウント「レインボードルフィン」\n\nイベント期間中にログインするだけで「サマーギフトパック」を受け取れます、お見逃しなく～",
+                "image": ""
+            }
+        }
+    },
+    {
+        "id": 3,
+        "category": "update",
+        "importance": "urgent",
+        "date": "2025-07-30",
+        "translations": {
+            "zh-CN": {
+                "title": "新版本「魔法学院」内容预览",
+                "content": "全新版本「魔法学院」即将于8月1日正式上线！全新玩法、全新角色、全新剧情等你体验～\n\n新版本亮点：\n1. 全新地图「魔法学院」开放探索\n2. 新增5位魔法系角色\n3. 全新玩法「魔法对决」上线\n4. 主线剧情更新至第15章\n5. 新增「魔法图鉴」收集系统\n\n版本优化：\n1. 重构战斗系统，提升战斗体验\n2. 优化UI界面，操作更加便捷\n3. 增加自动战斗功能\n4. 背包系统扩容\n\n「魔法学院」预约活动现已开启，预约即可获得限定奖励！",
+                "image": ""
+            },
+            "en-US": {
+                "title": "New Version \"Magic Academy\" Content Preview",
+                "content": "The brand new version \"Magic Academy\" will be officially launched on August 1st! New gameplay, new characters, new storyline waiting for you to experience～\n\nNew Version Highlights:\n1. New map \"Magic Academy\" open for exploration\n2. 5 new magic-type characters added\n3. New gameplay \"Magic Duel\" online\n4. Main storyline updated to Chapter 15\n5. New \"Magic Collection\" system added\n\nVersion Optimizations:\n1. Reconstructed battle system to enhance battle experience\n2. Optimized UI interface for more convenient operation\n3. Added auto-battle function\n4. Expanded backpack system\n\nThe \"Magic Academy\" pre-registration event has started, pre-register to get limited rewards!",
+                "image": ""
+            },
+            "ja-JP": {
+                "title": "新バージョン「魔法学院」コンテンツプレビュー",
+                "content": "全新バージョン「魔法学院」が8月1日に正式にリリースされます！新しいゲームプレイ、新キャラクター、新ストーリーが体験できます～\n\n新バージョンのハイライト：\n1. 新マップ「魔法学院」探索開始\n2. 5人の新しい魔法系キャラクター追加\n3. 新ゲームプレイ「魔法対決」オンライン\n4. メインストーリー第15章まで更新\n5. 新「魔法図鑑」収集システム追加\n\nバージョン最適化：\n1. 戦闘システムの再構築による戦闘体験の向上\n2. 操作性の向上のためのUIインターフェースの最適化\n3. オートバトル機能の追加\n4. バックパックシステムの拡張\n\n「魔法学院」事前登録イベントは既に開始されており、事前登録すると限定報酬を獲得できます！",
+                "image": ""
+            }
+        }
+    }
+]
