@@ -99,32 +99,36 @@
         <!-- 公告面板容器 -->
         <div class="glass-effect shadow-lg overflow-hidden border border-primary flex flex-col h-full">
             <!-- 顶部标题栏 -->
-            <div class="bg-primary bg-opacity-30 p-3 flex justify-between items-center border-b border-primary">
-                <div id="oh-my-goddess" class="text-xl font-bold text-primary">尝巾长襟常公告栏</div>
-                <div class="flex space-x-4 mx-auto">
-                    <button class="tab-button px-4 py-1 font-medium bg-white text-primary border border-primary active" data-tab="game">维护公告 (✧∇✧)</button>
-                    <button class="tab-button px-4 py-1 font-medium hover:bg-white hover:bg-opacity-50" data-tab="event">活动公告 (≧∇≦)</button>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <!-- 语言切换按钮 -->
-                    <div class="relative">
-                        <button id="language-toggle" class="btn-glow glass-effect px-3 py-1 flex items-center text-sm border border-primary">
-                            <i class="fa fa-globe mr-1"></i>
-                            <span id="current-language">中文</span>
-                            <i class="fa fa-chevron-down ml-1 text-xs"></i>
-                        </button>
-                        <div id="language-dropdown" class="hidden absolute right-0 mt-1 glass-effect shadow-lg z-10 w-32 border border-primary">
-                            <ul>
-                                <li><a href="#" class="language-option block px-3 py-1 hover:bg-primary hover:bg-opacity-30 text-sm" data-lang="zh-CN">中文</a></li>
-                                <li><a href="#" class="language-option block px-3 py-1 hover:bg-primary hover:bg-opacity-30 text-sm" data-lang="en-US">English</a></li>
-                                <li><a href="#" class="language-option block px-3 py-1 hover:bg-primary hover:bg-opacity-30 text-sm" data-lang="ja-JP">日本語</a></li>
-                            </ul>
+            <div class="bg-primary bg-opacity-30 border-b border-primary">
+                <!-- 第一行：标题、语言、关闭按钮 -->
+                <div class="p-3 flex justify-between items-center">
+                    <div id="oh-my-goddess" class="text-xl font-bold text-primary">尝巾长襟常公告栏</div>
+                    <div class="flex items-center space-x-2">
+                        <!-- 语言切换按钮 -->
+                        <div class="relative">
+                            <button id="language-toggle" class="btn-glow glass-effect px-3 py-1 flex items-center text-sm border border-primary">
+                                <i class="fa fa-globe mr-1"></i>
+                                <span id="current-language">中文</span>
+                                <i class="fa fa-chevron-down ml-1 text-xs"></i>
+                            </button>
+                            <div id="language-dropdown" class="hidden absolute right-0 mt-1 glass-effect shadow-lg z-10 w-32 border border-primary">
+                                <ul>
+                                    <li><a href="#" class="language-option block px-3 py-1 hover:bg-primary hover:bg-opacity-30 text-sm" data-lang="zh-CN">中文</a></li>
+                                    <li><a href="#" class="language-option block px-3 py-1 hover:bg-primary hover:bg-opacity-30 text-sm" data-lang="en-US">English</a></li>
+                                    <li><a href="#" class="language-option block px-3 py-1 hover:bg-primary hover:bg-opacity-30 text-sm" data-lang="ja-JP">日本語</a></li>
+                                </ul>
+                            </div>
                         </div>
+                        <!-- 关闭按钮 -->
+                        <button id="close-btn" class="w-7 h-7 flex items-center justify-center hover:bg-white hover:bg-opacity-30 btn-glow">
+                            <i class="fa fa-times"></i>
+                        </button>
                     </div>
-                    <!-- 关闭按钮 -->
-                    <button id="close-btn" class="w-7 h-7 flex items-center justify-center hover:bg-white hover:bg-opacity-30 btn-glow">
-                        <i class="fa fa-times"></i>
-                    </button>
+                </div>
+                <!-- 第二行：选项卡（所有设备都显示在第二行） -->
+                <div class="p-0 px-3 pb-3 flex justify-center space-x-4">
+                    <button class="tab-button px-4 py-1 font-medium bg-white text-primary border border-primary active" data-tab="game" data-lang-key="maintenanceAnnouncements">维护公告 (✧∇✧)</button>
+                    <button class="tab-button px-4 py-1 font-medium hover:bg-white hover:bg-opacity-50" data-tab="event" data-lang-key="eventAnnouncements">活动公告 (≧∇≦)</button>
                 </div>
             </div>
             
@@ -179,79 +183,80 @@
 
 
     <script>
-        // 公告数据（将从外部JSON文件加载）
-        let announcementsData = [];
-        const announcementsDataUrl = 'data/news.json';
-        
-        // 从JSON文件加载公告数据
-        async function loadAnnouncementsData() {
-            try {
-                const response = await fetch(announcementsDataUrl);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                announcementsData = await response.json();
-                console.log('公告数据加载成功:', announcementsData);
-                renderAnnouncements();
-            } catch (error) {
-                console.error('加载公告数据时出错:', error);
-                // 如果加载失败，使用默认数据
-                announcementsData = [
-                    {
-                        id: 1,
-                        category: "maintenance",
-                        importance: "important",
-                        date: "2025-07-21",
-                        translations: {
-                            "zh-CN": {
-                                title: "游戏更新维护与优化说明",
-                                content: "亲爱的玩家们：\n\n为了给大家带来更好的游戏体验，我们将于2025年7月22日进行服务器维护和版本更新。维护期间玩家将无法登录游戏，请各位玩家合理安排游戏时间。\n\n维护时间：\n2025年7月22日 08:00 - 12:00（预计4小时）\n\n更新内容：\n1. 新增角色「星光魔法师」及其专属技能\n2. 优化游戏性能，减少卡顿现象\n3. 修复已知bug，提升游戏稳定性\n4. 调整部分游戏平衡\n\n维护补偿：\n钻石×200，体力药水×2，高级召唤券×1\n\n感谢各位玩家的理解与支持！",
-                                image: "https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/dcf7c0e3a9984dda853b91a956c19623~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011867&x-signature=87CrgFNLUnVCb%2FhSN5JcewqM6Us%3D"
-                            },
-                            "en-US": {
-                                title: "Game Update Maintenance and Optimization Notice",
-                                content: "Dear Players:\n\nTo provide you with a better gaming experience, we will conduct server maintenance and version updates on July 22, 2025. Players will not be able to log in to the game during maintenance. Please arrange your gaming time reasonably.\n\nMaintenance Time:\nJuly 22, 2025 08:00 - 12:00 (expected 4 hours)\n\nUpdate Content:\n1. New character \"Starlight Mage\" and its exclusive skills\n2. Optimize game performance and reduce lag\n3. Fix known bugs and improve game stability\n4. Adjust some game balance\n\nMaintenance Compensation:\nDiamonds × 200,体力药水 × 2, Advanced Summon Ticket × 1\n\nThank you for your understanding and support!",
-                                image: "https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/dcf7c0e3a9984dda853b91a956c19623~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011867&x-signature=87CrgFNLUnVCb%2FhSN5JcewqM6Us%3D"
-                            },
-                            "ja-JP": {
-                                title: "ゲーム更新メンテナンスと最適化のお知らせ",
-                                content: "亲爱なるプレイヤーの皆様：\n\nより良いゲーム体験を提供するため、2025年7月22日にサーバーメンテナンスとバージョンアップデートを実施いたします。メンテナンス中はゲームにログインできませんので、皆様はゲーム時間を合理的に手配してください。\n\nメンテナンス時間：\n2025年7月22日 08:00 - 12:00（予定4時間）\n\n更新内容：\n1. 新キャラクター「スターライトマジシャン」とその専属スキルの追加\n2. ゲームパフォーマンスの最適化とラグの軽減\n3. 既知のバグの修正とゲーム安定性の向上\n4. 一部のゲームバランスの調整\n\nメンテナンス補償：\nダイヤモンド×200、体力薬×2、高級召喚券×1\n\nご理解とご協力に感謝いたします！",
-                                image: "https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/dcf7c0e3a9984dda853b91a956c19623~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011867&x-signature=87CrgFNLUnVCb%2FhSN5JcewqM6Us%3D"
-                            }
-                        }
-                    }
-                ];
-                renderAnnouncements();
-            }
-        }
-        
-        // 保存公告数据到JSON文件
-        async function saveAnnouncementsData() {
-            try {
-                const response = await fetch(announcementsDataUrl, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
+        // 公告数据 - 直接嵌入在HTML中，方便后续修改
+        const announcementsData = [
+            {
+                id: 1,
+                category: "maintenance",
+                importance: "important",
+                date: "2025-07-21",
+                translations: {
+                    "zh-CN": {
+                        title: "游戏更新维护与优化说明",
+                        content: "亲爱的玩家们：\n\n为了给大家带来更好的游戏体验，我们将于2025年7月22日进行服务器维护和版本更新。维护期间玩家将无法登录游戏，请各位玩家合理安排游戏时间。\n\n维护时间：\n2025年7月22日 08:00 - 12:00（预计4小时）\n\n更新内容：\n1. 新增角色「星光魔法师」及其专属技能\n2. 优化游戏性能，减少卡顿现象\n3. 修复已知bug，提升游戏稳定性\n4. 调整部分游戏平衡\n\n维护补偿：\n钻石×200，体力药水×2，高级召唤券×1\n\n感谢各位玩家的理解与支持！",
+                        image: "https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/dcf7c0e3a9984dda853b91a956c19623~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011867&x-signature=87CrgFNLUnVCb%2FhSN5JcewqM6Us%3D"
                     },
-                    body: JSON.stringify(announcementsData, null, 2),
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    "en-US": {
+                        title: "Game Update Maintenance and Optimization Notice",
+                        content: "Dear Players:\n\nTo provide you with a better gaming experience, we will conduct server maintenance and version updates on July 22, 2025. Players will not be able to log in to the game during maintenance. Please arrange your gaming time reasonably.\n\nMaintenance Time:\nJuly 22, 2025 08:00 - 12:00 (expected 4 hours)\n\nUpdate Content:\n1. New character \"Starlight Mage\" and its exclusive skills\n2. Optimize game performance and reduce lag\n3. Fix known bugs and improve game stability\n4. Adjust some game balance\n\nMaintenance Compensation:\nDiamonds × 200,体力药水 × 2, Advanced Summon Ticket × 1\n\nThank you for your understanding and support!",
+                        image: "https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/dcf7c0e3a9984dda853b91a956c19623~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011867&x-signature=87CrgFNLUnVCb%2FhSN5JcewqM6Us%3D"
+                    },
+                    "ja-JP": {
+                        title: "ゲーム更新メンテナンスと最適化のお知らせ",
+                        content: "亲爱なるプレイヤーの皆様：\n\nより良いゲーム体験を提供するため、2025年7月22日にサーバーメンテナンスとバージョンアップデートを実施いたします。メンテナンス中はゲームにログインできませんので、皆様はゲーム時間を合理的に手配してください。\n\nメンテナンス時間：\n2025年7月22日 08:00 - 12:00（予定4時間）\n\n更新内容：\n1. 新キャラクター「スターライトマジシャン」とその専属スキルの追加\n2. ゲームパフォーマンスの最適化とラグの軽減\n3. 既知のバグの修正とゲーム安定性の向上\n4. 一部のゲームバランスの調整\n\nメンテナンス補償：\nダイヤモンド×200、体力薬×2、高級召喚券×1\n\nご理解とご協力に感謝いたします！",
+                        image: "https://p9-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/dcf7c0e3a9984dda853b91a956c19623~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603140037235FD019D614C566978751&rrcfp=f06b921b&x-expires=1776011867&x-signature=87CrgFNLUnVCb%2FhSN5JcewqM6Us%3D"
+                    }
                 }
-                
-                console.log('公告数据保存成功');
-                alert('公告保存成功啦～ (✧∇✧)');
-                return true;
-            } catch (error) {
-                console.error('保存公告数据时出错:', error);
-                // 在实际环境中，这里会发送请求到服务器
-                // 在本地开发环境中，我们模拟保存成功
-                console.log('模拟公告数据保存成功');
-                alert('公告保存成功啦～ (✧∇✧)');
-                return true;
+            },
+            {
+                id: 2,
+                category: "event",
+                importance: "normal",
+                date: "2025-07-24",
+                translations: {
+                    "zh-CN": {
+                        title: "夏日限定活动「海滨冒险」开启",
+                        content: "炎炎夏日，「海滨冒险」活动清凉开启！参与活动赢取限定皮肤和丰厚奖励吧～\n\n活动时间：\n2025年7月25日 - 8月10日\n\n活动内容：\n1. 完成每日任务获取「贝壳」\n2. 使用「贝壳」兑换限定皮肤和道具\n3. 参与「沙滩排球」小游戏赢取额外奖励\n4. 组队挑战「深海遗迹」副本\n\n限定奖励：\n- 「夏日泳装」系列皮肤\n- 限定头像框「海滨假期」\n- 限定称号「海洋守护者」\n- 稀有坐骑「彩虹海豚」\n\n活动期间登录即可领取「夏日礼包」，不要错过哦～",
+                        image: ""
+                    },
+                    "en-US": {
+                        title: "Summer Limited Event \"Beach Adventure\" Now Available",
+                        content: "Hot summer days, the \"Beach Adventure\" event is now available! Participate in the event to win limited skins and rich rewards~\n\nEvent Period:\nJuly 25, 2025 - August 10, 2025\n\nEvent Content:\n1. Complete daily tasks to obtain \"Shells\"\n2. Use \"Shells\" to exchange for limited skins and items\n3. Participate in the \"Beach Volleyball\" mini-game to win extra rewards\n4. Team up to challenge the \"Deep Sea Ruins\" dungeon\n\nLimited Rewards:\n- \"Summer Swimwear\" series skins\n- Limited avatar frame \"Beach Holiday\"\n- Limited title \"Ocean Guardian\"\n- Rare mount \"Rainbow Dolphin\"\n\nLog in during the event period to receive the \"Summer Gift Pack\", don't miss it～",
+                        image: ""
+                    },
+                    "ja-JP": {
+                        title: "夏限定イベント「海浜アドベンチャー」開催中",
+                        content: "真夏の暑い日々、「海浜アドベンチャー」イベントが開催中！イベントに参加して限定スキンと豊富な報酬を獲得しよう～\n\nイベント期間：\n2025年7月25日 - 8月10日\n\nイベント内容：\n1. 毎日のタスクを完了して「貝殻」を入手\n2. 「貝殻」を使って限定スキンとアイテムと交換\n3. 「ビーチバレーボール」ミニゲームに参加して特別報酬を獲得\n4. チームを組んで「深海遺跡」ダンジョンに挑戦\n\n限定報酬：\n- 「サマー水着」シリーズスキン\n- 限定アバターフレーム「ビーチホリデー」\n- 限定称号「海の守護者」\n- レアマウント「レインボードルフィン」\n\nイベント期間中にログインするだけで「サマーギフトパック」を受け取れます、お見逃しなく～",
+                        image: ""
+                    }
+                }
+            },
+            {
+                id: 3,
+                category: "update",
+                importance: "urgent",
+                date: "2025-07-30",
+                translations: {
+                    "zh-CN": {
+                        title: "新版本「魔法学院」内容预览",
+                        content: "全新版本「魔法学院」即将于8月1日正式上线！全新玩法、全新角色、全新剧情等你体验～\n\n新版本亮点：\n1. 全新地图「魔法学院」开放探索\n2. 新增5位魔法系角色\n3. 全新玩法「魔法对决」上线\n4. 主线剧情更新至第15章\n5. 新增「魔法图鉴」收集系统\n\n版本优化：\n1. 重构战斗系统，提升战斗体验\n2. 优化UI界面，操作更加便捷\n3. 增加自动战斗功能\n4. 背包系统扩容\n\n「魔法学院」预约活动现已开启，预约即可获得限定奖励！",
+                        image: ""
+                    },
+                    "en-US": {
+                        title: "New Version \"Magic Academy\" Content Preview",
+                        content: "The brand new version \"Magic Academy\" will be officially launched on August 1st! New gameplay, new characters, new storyline waiting for you to experience～\n\nNew Version Highlights:\n1. New map \"Magic Academy\" open for exploration\n2. 5 new magic-type characters added\n3. New gameplay \"Magic Duel\" online\n4. Main storyline updated to Chapter 15\n5. New \"Magic Collection\" system added\n\nVersion Optimizations:\n1. Reconstructed battle system to enhance battle experience\n2. Optimized UI interface for more convenient operation\n3. Added auto-battle function\n4. Expanded backpack system\n\nThe \"Magic Academy\" pre-registration event has started, pre-register to get limited rewards!",
+                        image: ""
+                    },
+                    "ja-JP": {
+                        title: "新バージョン「魔法学院」コンテンツプレビュー",
+                        content: "全新バージョン「魔法学院」が8月1日に正式にリリースされます！新しいゲームプレイ、新キャラクター、新ストーリーが体験できます～\n\n新バージョンのハイライト：\n1. 新マップ「魔法学院」探索開始\n2. 5人の新しい魔法系キャラクター追加\n3. 新ゲームプレイ「魔法対決」オンライン\n4. メインストーリー第15章まで更新\n5. 新「魔法図鑑」収集システム追加\n\nバージョン最適化：\n1. 戦闘システムの再構築による戦闘体験の向上\n2. 操作性の向上のためのUIインターフェースの最適化\n3. オートバトル機能の追加\n4. バックパックシステムの拡張\n\n「魔法学院」事前登録イベントは既に開始されており、事前登録すると限定報酬を獲得できます！",
+                        image: ""
+                    }
+                }
             }
-        }
+        ];
+        
+
         
         // 获取公告的翻译内容
         function getAnnouncementTranslation(announcement) {
@@ -409,8 +414,10 @@
         };
 
         // DOM元素
-        const announcementsList = document.getElementById('announcements-list');
-        const announcementContent = document.getElementById('announcement-content');
+        const announcementsListMobile = document.getElementById('announcements-list-mobile');
+        const announcementsListDesktop = document.getElementById('announcements-list-desktop');
+        const announcementContentMobile = document.getElementById('announcement-content-mobile');
+        const announcementContentDesktop = document.getElementById('announcement-content');
         const tabButtons = document.querySelectorAll('.tab-button');
         const languageToggle = document.getElementById('language-toggle');
         const languageDropdown = document.getElementById('language-dropdown');
@@ -426,28 +433,33 @@
         function initPage() {
             setupEventListeners();
             updateLanguage(currentLanguage);
-            loadAnnouncementsData(); // 从外部文件加载数据
+            renderAnnouncements(); // 直接渲染公告数据
         }
 
         // 渲染公告列表
         function renderAnnouncements() {
             const data = getFilteredAnnouncements();
-            announcementsList.innerHTML = '';
+            
+            // 清空并渲染移动端列表
+            announcementsListMobile.innerHTML = '';
+            // 清空并渲染桌面端列表
+            announcementsListDesktop.innerHTML = '';
             
             if (data.length === 0) {
-                announcementsList.innerHTML = `
+                const noDataHTML = `
                     <div class="text-center py-8">
                         <i class="fa fa-info-circle text-4xl text-primary mb-4"></i>
                         <p class="text-lg">${translations[currentLanguage].noAnnouncementsFound}</p>
                     </div>
                 `;
+                announcementsListMobile.innerHTML = noDataHTML;
+                announcementsListDesktop.innerHTML = noDataHTML;
                 return;
             }
             
             data.forEach(announcement => {
-                const announcementElement = document.createElement('div');
-                announcementElement.className = 'announcement-item p-3 hover:bg-primary hover:bg-opacity-20 cursor-pointer';
-                announcementElement.setAttribute('data-id', announcement.id);
+                // 获取当前语言的公告内容
+                const translation = getAnnouncementTranslation(announcement);
                 
                 // 根据重要程度设置前缀图标
                 let importanceIcon = '';
@@ -458,71 +470,80 @@
                 } else {
                     importanceIcon = '<i class="fa fa-bullhorn text-primary mr-2"></i>';
                 }
-                
-                // 获取当前语言的公告内容
-                const translation = getAnnouncementTranslation(announcement);
-                
-                announcementElement.innerHTML = `
+
+                // 创建桌面端列表项
+                const desktopItem = document.createElement('div');
+                desktopItem.className = 'announcement-item p-3 hover:bg-primary hover:bg-opacity-20 cursor-pointer';
+                desktopItem.setAttribute('data-id', announcement.id);
+                desktopItem.innerHTML = `
                     <div class="flex items-start">
                         <div class="flex-1">
                             <h3 class="font-medium text-primary">${importanceIcon}${translation.title}</h3>
                             <p class="text-sm text-secondary mt-1">${formatDate(announcement.date)}</p>
                         </div>
-
                     </div>
                 `;
-                
-                announcementsList.appendChild(announcementElement);
-                
-                // 添加点击事件
-                announcementElement.addEventListener('click', (e) => {
-                    // 如果点击的是编辑或删除按钮，不打开详情
-                    if (e.target.closest('.edit-btn') || e.target.closest('.delete-btn')) {
-                        return;
-                    }
-                    
-                    // 移除所有活动状态
-                    document.querySelectorAll('.announcement-item').forEach(item => {
-                        item.classList.remove('active-announcement');
-                    });
-                    
-                    // 添加活动状态到当前项
-                    // 为所有项设置基础镂空样式
-                document.querySelectorAll('.announcement-item').forEach(item => {
-                    item.style.backgroundColor = 'transparent';
-                    item.style.margin = '8px';
-                    item.style.border = '1px solid transparent';
-                    item.style.boxShadow = 'none';
-                });
-                // 为当前项添加描边和发光效果
-                announcementElement.style.backgroundColor = 'rgba(204, 207, 225, 0.3)';
-                announcementElement.style.border = '1px solid #CCCFE1';
-                announcementElement.style.boxShadow = '0 0 15px rgba(204, 207, 225, 0.8)';
-                    
-                    // 更新当前选中的公告ID
-                    currentAnnouncementId = announcement.id;
-                    
-                    // 显示公告详情
-                    showAnnouncementDetail(announcement);
-                });
-                
+                announcementsListDesktop.appendChild(desktopItem);
 
+                // 创建移动端列表项 (卡片样式)
+                const mobileItem = document.createElement('div');
+                mobileItem.className = 'announcement-item flex-shrink-0 w-64 glass-effect rounded-lg shadow-md overflow-hidden cursor-pointer';
+                mobileItem.setAttribute('data-id', announcement.id);
+                mobileItem.innerHTML = `
+                    <div class="p-3">
+                        <div class="flex items-center mb-2">
+                            <span class="text-xs px-2 py-1 rounded-full ${announcement.importance === 'urgent' ? 'bg-red-100 text-red-800' : announcement.importance === 'important' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}">${translations[currentLanguage][announcement.importance]}</span>
+                        </div>
+                        <h3 class="font-medium text-primary text-sm line-clamp-2 h-10">${translation.title}</h3>
+                        <p class="text-xs text-secondary mt-1">${formatDate(announcement.date)}</p>
+                    </div>
+                `;
+                announcementsListMobile.appendChild(mobileItem);
+                
+                // 为桌面端和移动端列表项添加点击事件
+                [desktopItem, mobileItem].forEach(item => {
+                    item.addEventListener('click', () => {
+                        // 移除所有活动状态
+                        document.querySelectorAll('.announcement-item').forEach(i => {
+                            i.classList.remove('active-announcement');
+                            i.style.backgroundColor = 'transparent';
+                            i.style.margin = '8px';
+                            i.style.border = '1px solid transparent';
+                            i.style.boxShadow = 'none';
+                        });
+                        
+                        // 添加活动状态到当前项 (桌面端)
+                        desktopItem.style.backgroundColor = 'rgba(204, 207, 225, 0.3)';
+                        desktopItem.style.border = '1px solid #CCCFE1';
+                        desktopItem.style.boxShadow = '0 0 15px rgba(204, 207, 225, 0.8)';
+                        
+                        // 添加活动状态到当前项 (移动端)
+                        mobileItem.style.backgroundColor = 'rgba(204, 207, 225, 0.5)';
+                        mobileItem.style.boxShadow = '0 0 15px rgba(204, 207, 225, 0.8)';
+                        
+                        // 更新当前选中的公告ID
+                        currentAnnouncementId = announcement.id;
+                        
+                        // 显示公告详情
+                        showAnnouncementDetail(announcement);
+                    });
+                });
             });
             
             // 如果有公告且没有选中的公告，默认选中第一个
             if (data.length > 0 && currentAnnouncementId === null) {
-                const firstItem = announcementsList.querySelector('.announcement-item');
-                if (firstItem) {
-                    firstItem.click();
+                const firstDesktopItem = announcementsListDesktop.querySelector('.announcement-item');
+                if (firstDesktopItem) {
+                    firstDesktopItem.click();
                 }
             } else if (currentAnnouncementId !== null) {
                 // 如果有选中的公告ID，尝试选中对应项
-                const selectedItem = announcementsList.querySelector(`[data-id="${currentAnnouncementId}"]`);
+                const selectedItem = announcementsListDesktop.querySelector(`[data-id="${currentAnnouncementId}"]`);
                 if (selectedItem) {
                     selectedItem.click();
                 } else {
                     // 如果找不到选中的公告，选中第一个
-                    const firstItem = announcementsList.querySelector('.announcement-item');
+                    const firstItem = announcementsListDesktop.querySelector('.announcement-item');
                     if (firstItem) {
                         firstItem.click();
                     }
@@ -609,7 +630,9 @@
                 <div class="prose max-w-none whitespace-pre-line">${translation.content}</div>
             `;
             
-            announcementContent.innerHTML = detailHtml;
+            // 更新移动端和桌面端的内容
+            announcementContentMobile.innerHTML = detailHtml;
+            announcementContentDesktop.innerHTML = detailHtml;
         }
 
 
@@ -632,8 +655,14 @@
             document.getElementById('oh-my-goddess').textContent = translations[lang].ohMyGoddess;
             
             // 更新标签按钮文本
-            tabButtons[0].textContent = translations[lang].maintenanceAnnouncements + ' (✧∇✧)';
-            tabButtons[1].textContent = translations[lang].eventAnnouncements + ' (≧∇≦)';
+            tabButtons.forEach(button => {
+                const langKey = button.getAttribute('data-lang-key');
+                if (langKey === 'maintenanceAnnouncements') {
+                    button.textContent = translations[lang].maintenanceAnnouncements + ' (✧∇✧)';
+                } else if (langKey === 'eventAnnouncements') {
+                    button.textContent = translations[lang].eventAnnouncements + ' (≧∇≦)';
+                }
+            });
             
             // 重新渲染公告列表
             renderAnnouncements();
